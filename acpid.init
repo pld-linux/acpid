@@ -1,0 +1,59 @@
+#!/bin/sh
+#
+# acpid		Starts the acpi daemon
+#
+# chkconfig:	345 44 56
+# description:	Listen and dispatch ACPI events from the kernel
+# processname:	acpid
+#
+# pidfile:	/var/run/acpid.pid
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Configuration file.
+. /etc/sysconfig/acpid
+
+test -x /usr/sbin/acpid || echo "You need to check package!!"; exit 0
+
+RETVAL=0
+
+# See how we were called.
+case "$1" in
+	start)
+	# Start daemons.
+		if [ ! -f /var/lock/subsys/acpid ]; then
+		    msg_starting acpid $PROGRAM_ARGS
+		    daemon acpid
+		    RETVAL=$?
+		    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/acpid
+		else
+			msg_already_running acpid
+	      	fi
+	    	;;
+	stop)
+		# Stop daemons.
+		if [ -f /var/lock/subsys/acpid ]; then
+			msg_stopping acpid
+			killproc acpid
+			rm -f /var/lock/subsys/acpid >/dev/null 2>&1
+		else
+			msg_not_running acpid
+			exit 1
+		fi
+		;;
+	reload)
+		trap "" SIGHUP
+		killall -HUP acpid
+		;;
+	restart)
+		$0 stop
+		$0 start
+		;;
+	status)
+		status acpid
+		;;
+	*)
+		msg_Usage "$0 {start|stop|restart|reload|status}"
+		exit 1
+esac

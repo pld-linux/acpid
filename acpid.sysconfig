@@ -1,0 +1,7 @@
+# Customized setings for acpid
+
+# Define nice level for acpid:
+SERVICE_RUN_NICE_LEVEL="+0"
+
+# Program arguments:
+PROGRAM_ARGS=""
