@@ -48,7 +48,7 @@ case "$1" in
 		killproc acpid -HUP
 		RETVAL=$?
 	else
-		msg_not_running acpid
+		msg_not_running acpid >&2
 		exit 7
 	fi
 	;;
