@@ -89,7 +89,7 @@ fi
 %dir %{_sysconfdir}/acpi
 %dir %{_sysconfdir}/acpi/events
 %dir %{_sysconfdir}/acpi/actions
-%attr(640,root,root) /etc/logrotate.d/acpid
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/acpid
 %attr(754,root,root) /etc/rc.d/init.d/acpid
 %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/acpid
 %config(noreplace,missingok) %verify(not size mtime md5) %{_sysconfdir}/acpi/events/*.conf
