@@ -1,0 +1,12 @@
+- some cleanup, added Source URL
+
+* Thu Aug 16 2001  Tim Hockin <thockin@sun.com>
+  - Added commandline options to actions
+
+* Wed Aug 15 2001  Tim Hockin <thockin@sun.com>
+  - Added UNIX domain socket support
+  - Changed /etc/acpid.d to /etc/acpid/events
+
+* Mon Aug 13 2001  Tim Hockin <thockin@sun.com>
+  - added changelog
+  - 0.99.1-1
