@@ -8,12 +8,7 @@ PROGRAM_ARGS=""
 
 # Run modprobe ospm_system (not present in 2.6 kernels) to allow
 # smooth system shutdown
-if [ `kernelverser` -lt 002006 ]
-then
-   MODPROBE_OSPM_SYSTEM="yes"
-else
-   MODPROBE_OSPM_SYSTEM="no"
-fi
+MODPROBE_OSPM_SYSTEM="yes"
 
 # These modules are needed on laptops.
 #LAPTOP_MODULES="ac battery"
