@@ -19,6 +19,7 @@ URL:		http://acpid.sourceforge.net/
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Obsoletes:	apmd
+Obsoletes:	poweracpid
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
