@@ -21,8 +21,9 @@ case "$1" in
   start)
 	# Start daemons.
 	if [ ! -f /var/lock/subsys/acpid ]; then
-		if [ ! -f /proc/acpi/event ]; then
-			_modprobe single ospm_button
+		if [ ! -d /proc/acpi/button ]; then
+			_modprobe ospm_button
+			_modprobe button
 		fi
 		if is_yes "$MODPROBE_OSPM_SYSTEM"; then
 			_modprobe single ospm_system

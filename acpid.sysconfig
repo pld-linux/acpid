@@ -6,5 +6,6 @@ SERVICE_RUN_NICE_LEVEL="+0"
 # Program arguments:
 PROGRAM_ARGS=""
 
-# Run modprobe ospm_system on startup
+# Run modprobe ospm_system (not present in 2.6 kernels) to allow
+# smooth system shutdown
 MODPROBE_OSPM_SYSTEM="yes"
