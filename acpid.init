@@ -37,11 +37,11 @@ case "$1" in
 		# starting:
 		msg_starting acpid $PROGRAM_ARGS
 		# Load additional modules:
-		if [ -z "$LAPTOP_MODULES" ]; then
+		if [ -n "$LAPTOP_MODULES" ]; then
 			for i in "$LAPTOP_MODULES"; do
 				_modprobe single $i
 			done
-		elif [ -z "$VARIOUS_MODULES" ] then
+		elif [ -n "$VARIOUS_MODULES" ]; then
 			for i in "$VARIOUS_MODULES"; do
 				_modprobe single $i
 			done
