@@ -61,7 +61,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc Changelog README samples/acpi_handler.sh
+%doc Changelog README
 %dir %{_sysconfdir}/acpi
 %dir %{_sysconfdir}/acpi/events
 %dir %{_sysconfdir}/acpi/actions
