@@ -14,7 +14,6 @@
 # Configuration file.
 . /etc/sysconfig/acpid
 
-test -x /usr/sbin/acpid || echo "You need to check package!!"; exit 0
 
 RETVAL=0
 
