@@ -5,11 +5,12 @@ Version:	1.0.1
 Release:	3
 License:	GPL
 Group:		Daemons
-Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/acpid/%{name}-%{version}.tar.gz
+Source0:	http://dl.sourceforge.net/acpid/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 URL:		http://acpid.sourceforge.net/
+PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Obsoletes:	apmd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
