@@ -36,11 +36,11 @@ case "$1" in
 		fi
 		# Load additional modules:
 		if [ -n "$LAPTOP_MODULES" ]; then
-			for i in "$LAPTOP_MODULES"; do
+			for i in $LAPTOP_MODULES; do
 				_modprobe single $i
 			done
 		elif [ -n "$VARIOUS_MODULES" ]; then
-			for i in "$VARIOUS_MODULES"; do
+			for i in $VARIOUS_MODULES; do
 				_modprobe single $i
 			done
 		fi
