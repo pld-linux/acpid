@@ -47,10 +47,8 @@ case "$1" in
   reload)
 	if [ -f /var/lock/subsys/acpid ]; then
 		msg_reloading acpid
-		busy
 		killproc acpid -HUP
 		RETVAL=$?
-		[ $RETVAL -eq 0 ] && ok || died
 	else
 		msg_not_running acpid
 		exit 1
