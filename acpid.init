@@ -39,7 +39,8 @@ case "$1" in
 			for i in $LAPTOP_MODULES; do
 				_modprobe single $i
 			done
-		elif [ -n "$VARIOUS_MODULES" ]; then
+		fi
+		if [ -n "$VARIOUS_MODULES" ]; then
 			for i in $VARIOUS_MODULES; do
 				_modprobe single $i
 			done
