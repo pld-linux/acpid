@@ -1,21 +1,15 @@
 diff -urN acpid.orig/samples/acpi_handler.sh acpid-1.0.2/samples/acpi_handler.sh
 --- acpid.orig/samples/acpi_handler.sh	2001-08-13 19:45:25.000000000 +0200
 +++ acpid-1.0.2/samples/acpi_handler.sh	2003-09-22 21:07:13.974984824 +0200
-@@ -15,6 +15,14 @@
+@@ -11,6 +11,8 @@
+ 		case "$2" in
+ 			power)	/sbin/init 0
  				;;
- 		esac
- 		;;
-+	button)
-+		case "$2" in
 +			sleep)	logger "ACPI sleep action on $2 is not defined"
 +				;;
-+			*)	logger "ACPI action $2 is not defined"
-+			;;
-+		esac
-+		;;
- 
- 	*)
- 		logger "ACPI group $1 is not defined"
+ 			*)	logger "ACPI action $2 is not defined"
+ 				;;
+ 		esac
 diff -urN acpid.orig/samples/sample.conf acpid-1.0.2/samples/sample.conf
 --- acpid.orig/samples/sample.conf	2001-08-16 23:39:00.000000000 +0200
 +++ acpid-1.0.2/samples/sample.conf	2003-09-22 21:07:26.895020680 +0200
