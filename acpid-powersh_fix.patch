@@ -1,27 +1,34 @@
---- ./samples/acpi_handler.sh.org	Mon Aug 13 19:45:25 2001
-+++ ./samples/acpi_handler.sh	Mon Sep  1 01:38:14 2003
-@@ -7,14 +7,22 @@
+diff -urN acpid.orig/samples/acpi_handler.sh acpid-1.0.2/samples/acpi_handler.sh
+--- acpid.orig/samples/acpi_handler.sh	2001-08-13 19:45:25.000000000 +0200
++++ acpid-1.0.2/samples/acpi_handler.sh	2003-09-22 20:18:12.997078728 +0200
+@@ -7,15 +7,12 @@
  set $*
  
  case "$1" in
 -	button)
-+	button/power)
- 		case "$2" in
+-		case "$2" in
 -			power)	/sbin/init 0
-+			PWRF)	/sbin/init 0
- 				;;
- 			*)	logger "ACPI action $2 is not defined"
- 				;;
- 		esac
- 		;;
-+	button/sleep)
-+		case "$2" in
-+			SLPB)	logger "ACPI sleep action on $2 is not defined"
-+				;;
-+			*)	logger "ACPI action $2 is not defined"
-+			;;
-+		esac
+-				;;
+-			*)	logger "ACPI action $2 is not defined"
+-				;;
+-		esac
++	button/power)
++		/sbin/init 0
 +		;;
- 
++	button/sleep)
++		logger "ACPI sleep action on $2 is not defined"
+ 		;;
+-
  	*)
  		logger "ACPI group $1 is not defined"
+ 		;;
+diff -urN acpid.orig/samples/sample.conf acpid-1.0.2/samples/sample.conf
+--- acpid.orig/samples/sample.conf	2001-08-16 23:39:00.000000000 +0200
++++ acpid-1.0.2/samples/sample.conf	2003-09-22 20:20:21.475547032 +0200
+@@ -1,4 +1,4 @@
+ # This is a sample ACPID configuration
+ 
+-# event=button power.*
+-# action=/usr/local/bin/power.sh "%e"
++# event=power
++# action=/usr/sbin/power.sh "%e"
