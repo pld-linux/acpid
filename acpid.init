@@ -19,48 +19,53 @@ RETVAL=0
 
 # See how we were called.
 case "$1" in
-	start)
+  start)
 	# Start daemons.
-		if [ ! -f /var/lock/subsys/acpid ]; then
-			if [ ! -f /proc/acpi/event ]; then
-				modprobe ospm_button
-			fi
-			msg_starting acpid $PROGRAM_ARGS
-			daemon acpid
-			RETVAL=$?
-			[ $RETVAL -eq 0 ] && touch /var/lock/subsys/acpid
-		else
-			msg_already_running acpid
+	if [ ! -f /var/lock/subsys/acpid ]; then
+		if [ ! -f /proc/acpi/event ]; then
+			modprobe ospm_button
 		fi
-	    	;;
-	stop)
-		# Stop daemons.
-		if [ -f /var/lock/subsys/acpid ]; then
-			msg_stopping acpid
-			killproc acpid
-			rm -f /var/lock/subsys/acpid >/dev/null 2>&1
-		else
-			msg_not_running acpid
-			exit 1
-		fi
-		;;
-	reload)
-                if [ -f /var/lock/subsys/acpid ]; then
-                        msg_reloading acpid
-                        killproc acpid -HUP
-                else
-                        msg_not_running acpid
-                        exit 1
-                fi
-		;;
-	restart)
-		$0 stop
-		$0 start
-		;;
-	status)
-		status acpid
-		;;
-	*)
-		msg_Usage "$0 {start|stop|restart|reload|status}"
+		msg_starting acpid $PROGRAM_ARGS
+		daemon acpid
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/acpid
+	else
+		msg_already_running acpid
+	fi
+	;;
+  stop)
+	# Stop daemons.
+	if [ -f /var/lock/subsys/acpid ]; then
+		msg_stopping acpid
+		killproc acpid
+		rm -f /var/lock/subsys/acpid >/dev/null 2>&1
+	else
+		msg_not_running acpid
 		exit 1
+	fi
+	;;
+  reload)
+	if [ -f /var/lock/subsys/acpid ]; then
+		msg_reloading acpid
+		busy
+		killproc acpid -HUP
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && ok || died
+	else
+		msg_not_running acpid
+		exit 1
+	fi
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  status)
+	status acpid
+	;;
+  *)
+	msg_usage "$0 {start|stop|restart|reload|status}"
+	exit 1
 esac
+
+exit $RETVAL
