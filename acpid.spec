@@ -11,6 +11,7 @@ Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/acpid/%{name}-%{version}.tar.
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://acpid.sourceforge.net/
+Obsoletes:	apmd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
