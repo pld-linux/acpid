@@ -16,14 +16,13 @@
 
 
 RETVAL=0
-
 # See how we were called.
 case "$1" in
   start)
 	# Start daemons.
 	if [ ! -f /var/lock/subsys/acpid ]; then
 		if [ ! -f /proc/acpi/event ]; then
-			modprobe ospm_button
+			_modprobe single ospm_button
 		fi
 		msg_starting acpid $PROGRAM_ARGS
 		daemon acpid
@@ -41,29 +40,30 @@ case "$1" in
 		rm -f /var/lock/subsys/acpid >/dev/null 2>&1
 	else
 		msg_not_running acpid
-		exit 1
 	fi
 	;;
-  reload)
+  reload|force-reload)
 	if [ -f /var/lock/subsys/acpid ]; then
 		msg_reloading acpid
 		killproc acpid -HUP
 		RETVAL=$?
 	else
 		msg_not_running acpid
-		exit 1
+		exit 7
 	fi
 	;;
   restart)
 	$0 stop
 	$0 start
+	exit =$?
 	;;
   status)
 	status acpid
+	exit =$?
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|reload|status}"
-	exit 1
+	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
+	exit 3
 esac
 
 exit $RETVAL
