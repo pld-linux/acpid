@@ -24,6 +24,9 @@ case "$1" in
 		if [ ! -f /proc/acpi/event ]; then
 			_modprobe single ospm_button
 		fi
+		if is_yes "$MODPROBE_OSPM_SYSTEM"; then
+			_modprobe single ospm_system
+		fi
 		msg_starting acpid $PROGRAM_ARGS
 		daemon acpid
 		RETVAL=$?

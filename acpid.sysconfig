@@ -5,3 +5,6 @@ SERVICE_RUN_NICE_LEVEL="+0"
 
 # Program arguments:
 PROGRAM_ARGS=""
+
+# Run modprobe ospm_system on startup
+MODPROBE_OSPM_SYSTEM="yes"
