@@ -27,16 +27,16 @@ acpid to demon przekazuj±cy zdarzenia ACPI do programów w user-space.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/etc/{logrotate.d,rc.d/init.d,sysconfig},/var/log} \
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{logrotate.d,rc.d/init.d,sysconfig},/var/log} \
 	$RPM_BUILD_ROOT{%{_sysconfdir}/acpi/{events,actions},%{_sbindir},%{_mandir}/man8}
 
 install acpid $RPM_BUILD_ROOT/%{_sbindir}
 install acpid.8 $RPM_BUILD_ROOT/%{_mandir}/man8
 install samples/sample.conf $RPM_BUILD_ROOT%{_sysconfdir}/acpi/events
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/acpid
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/acpid
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/acpid
-install samples/acpi_handler.sh %{_sbindir}/power.sh
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/acpid
+install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/acpid
+install %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/acpid
+install samples/acpi_handler.sh $RPM_BUILD_ROOT%{_sbindir}/power.sh
 
 > $RPM_BUILD_ROOT/var/log/acpid
 
@@ -65,9 +65,9 @@ fi
 %dir %{_sysconfdir}/acpi
 %dir %{_sysconfdir}/acpi/events
 %dir %{_sysconfdir}/acpi/actions
-%attr(640,root,root) /etc/logrotate.d/acpid
-%attr(754,root,root) /etc/rc.d/init.d/acpid
-%config(noreplace) %verify(not size mtime md5) /etc/sysconfig/acpid
+%attr(640,root,root) %{_sysconfdir}/logrotate.d/acpid
+%attr(754,root,root) %{_sysconfdir}/rc.d/init.d/acpid
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/sysconfig/acpid
 %config(noreplace,missingok) %verify(not size mtime md5) %{_sysconfdir}/acpi/events/sample.conf
 %attr(755,root,root) %{_sbindir}/acpid
 %attr(755,root,root) %{_sbindir}/power.sh
