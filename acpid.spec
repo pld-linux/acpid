@@ -2,7 +2,7 @@ Summary:	ACPI Event Daemon
 Summary(pl):	Demon zdarzeñ ACPI
 Name:		acpid
 Version:	1.0.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		Daemons
 Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/acpid/%{name}-%{version}.tar.gz
@@ -36,6 +36,7 @@ install samples/sample.conf $RPM_BUILD_ROOT%{_sysconfdir}/acpi/events
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/acpid
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/acpid
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/acpid
+install samples/acpi_handler.sh %{_sbindir}/power.sh
 
 > $RPM_BUILD_ROOT/var/log/acpid
 
@@ -69,5 +70,6 @@ fi
 %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/acpid
 %config(noreplace,missingok) %verify(not size mtime md5) %{_sysconfdir}/acpi/events/sample.conf
 %attr(755,root,root) %{_sbindir}/acpid
+%attr(755,root,root) %{_sbindir}/power.sh
 %attr(640,root,root) %ghost /var/log/acpid
 %{_mandir}/man8/acpid.8.gz
