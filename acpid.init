@@ -42,8 +42,13 @@ case "$1" in
 		fi
 		;;
 	reload)
-		trap "" SIGHUP
-		killall -HUP acpid
+                if [ -f /var/lock/subsys/acpid ]; then
+                        msg_reloading acpid
+                        killproc acpid -HUP
+                else
+                        msg_not_running acpid
+                        exit 1
+                fi
 		;;
 	restart)
 		$0 stop
