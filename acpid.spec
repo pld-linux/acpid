@@ -5,15 +5,16 @@
 Summary:	ACPI Event Daemon
 Summary(pl):	Demon zdarzeñ ACPI
 Name:		acpid
-Version:	1.0.2
-Release:	3
+Version:	1.0.3
+Release:	1
 License:	GPL v2
 Group:		Daemons
-# Source0-md5:	15884aaf0b82717954f9366b5c00808b
 Source0:	http://dl.sourceforge.net/acpid/%{name}-%{version}.tar.gz
+# Source0-md5:	8513c19d0f14ff396ea73caaea7f2ef8
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
+Source4:	%{name}.halt_on_power_button.conf
 Patch0:		%{name}-powersh_fix.patch
 URL:		http://acpid.sourceforge.net/
 PreReq:		rc-scripts
@@ -47,6 +48,9 @@ install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/acpid
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/acpid
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/acpid
 install samples/acpi_handler.sh $RPM_BUILD_ROOT%{_sbindir}/power.sh
+# Or create halt_on_power_button subpackage
+install %{SOURCE4} $RPM_BUILD_ROOT/etc/acpi/events
+
 
 > $RPM_BUILD_ROOT/var/log/acpid
 
@@ -69,16 +73,26 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del acpid
 fi
 
+# %post halt_on_power_button
+# if [ -f /var/lock/subsys/acpid ]; then
+#     /etc/rc.d/init.d/acpid reload
+# fi
+
+# %postun halt_on_power_button
+# if [ -f /var/lock/subsys/acpid ]; then
+#     /etc/rc.d/init.d/acpid reload
+# fi
+
 %files
 %defattr(644,root,root,755)
-%doc Changelog README TODO debian/README.debian
+%doc Changelog README TODO 
 %dir %{_sysconfdir}/acpi
 %dir %{_sysconfdir}/acpi/events
 %dir %{_sysconfdir}/acpi/actions
 %attr(640,root,root) /etc/logrotate.d/acpid
 %attr(754,root,root) /etc/rc.d/init.d/acpid
 %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/acpid
-%config(noreplace,missingok) %verify(not size mtime md5) %{_sysconfdir}/acpi/events/sample.conf
+%config(noreplace,missingok) %verify(not size mtime md5) %{_sysconfdir}/acpi/events/*.conf
 %attr(755,root,root) %{_sbindir}/acpid
 %attr(755,root,root) %{_sbindir}/power.sh
 %attr(640,root,root) %ghost /var/log/acpid
