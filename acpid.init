@@ -23,7 +23,7 @@ case "$1" in
 	# Start daemons.
 		if [ ! -f /var/lock/subsys/acpid ]; then
 			if [ ! -f /proc/acpi/event ]; then
-				modprobe ospm_system
+				modprobe ospm_button
 			fi
 			msg_starting acpid $PROGRAM_ARGS
 			daemon acpid
