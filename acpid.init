@@ -58,11 +58,11 @@ case "$1" in
   restart)
 	$0 stop
 	$0 start
-	exit =$?
+	exit $?
 	;;
   status)
 	status acpid
-	exit =$?
+	exit $?
 	;;
   *)
 	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
