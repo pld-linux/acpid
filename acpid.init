@@ -34,8 +34,6 @@ case "$1" in
 		if is_yes "$MODPROBE_OSPM_SYSTEM"; then
 			_modprobe single ospm_system
 		fi
-		# starting:
-		msg_starting acpid $PROGRAM_ARGS
 		# Load additional modules:
 		if [ -n "$LAPTOP_MODULES" ]; then
 			for i in "$LAPTOP_MODULES"; do
@@ -52,6 +50,8 @@ case "$1" in
 		elif is_yes "$TOSHIBA_LAPTOP"; then
 			_modprobe toshiba_acpi
 		fi
+		# starting:
+		msg_starting acpid $PROGRAM_ARGS
 		daemon acpid
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/acpid
