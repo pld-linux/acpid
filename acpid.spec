@@ -2,7 +2,7 @@ Summary:	ACPI Event Daemon
 Summary(pl):	Demon zdarzeñ ACPI
 Name:		acpid
 Version:	1.0.0
-Release:	1
+Release:	2
 License:	GPL
 Group:		Daemons
 Group(de):	Server
@@ -26,7 +26,10 @@ acpid to demon przekazuj±cy zdarzenia ACPI do programów w user-space.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT
-%{__make} install INSTPREFIX=$RPM_BUILD_ROOT
+
+install -d $RPM_BUILD_ROOT/{%{_sbindir},%{_mandir}/man8}
+install acpid $RPM_BUILD_ROOT/%{_sbindir}
+install acpid.8 $RPM_BUILD_ROOT/%{_mandir}/man8
 
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/acpi/{events,actions},/var/log,/etc/rc.d/init.d}
 
