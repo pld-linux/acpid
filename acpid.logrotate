@@ -1,2 +1,5 @@
 /var/log/acpid {
+	postrotate
+		/bin/killall -HUP acpid
+	endscript
 }
