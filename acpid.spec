@@ -1,12 +1,12 @@
 Summary:	ACPI Event Daemon
 Summary(pl):	Demon zdarzeñ ACPI
 Name:		acpid
-Version:	1.0.1
-Release:	3
+Version:	1.0.2
+Release:	1
 License:	GPL
 Group:		Daemons
+# Source0-md5:	15884aaf0b82717954f9366b5c00808b
 Source0:	http://dl.sourceforge.net/acpid/%{name}-%{version}.tar.gz
-# Source0-md5:	0c03d957aec557857ffc7941243083d9
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
