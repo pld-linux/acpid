@@ -1,15 +1,20 @@
+# TODO:
+# - better event handling in power.sh
+# - better default configuration of events in /etc/acpi
+# - processor and fan module support (?)
 Summary:	ACPI Event Daemon
 Summary(pl):	Demon zdarzeñ ACPI
 Name:		acpid
 Version:	1.0.2
-Release:	2
-License:	GPL
+Release:	2.2
+License:	GPL v2
 Group:		Daemons
 # Source0-md5:	15884aaf0b82717954f9366b5c00808b
 Source0:	http://dl.sourceforge.net/acpid/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
+Patch0:		%{name}-powersh_fix.patch
 URL:		http://acpid.sourceforge.net/
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
@@ -24,6 +29,7 @@ acpid to demon przekazuj±cy zdarzenia ACPI do programów w user-space.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__make}
@@ -64,7 +70,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc Changelog README
+%doc Changelog README TODO debian/README.debian
 %dir %{_sysconfdir}/acpi
 %dir %{_sysconfdir}/acpi/events
 %dir %{_sysconfdir}/acpi/actions
