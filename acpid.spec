@@ -73,4 +73,4 @@ fi
 %attr(755,root,root) %{_sbindir}/acpid
 %attr(755,root,root) %{_sbindir}/power.sh
 %attr(640,root,root) %ghost /var/log/acpid
-%{_mandir}/man8/acpid.8.gz
+%{_mandir}/man8/acpid.8*
