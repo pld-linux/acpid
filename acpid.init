@@ -22,13 +22,16 @@ case "$1" in
 	start)
 	# Start daemons.
 		if [ ! -f /var/lock/subsys/acpid ]; then
-		    msg_starting acpid $PROGRAM_ARGS
-		    daemon acpid
-		    RETVAL=$?
-		    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/acpid
+			if [ ! -f /proc/acpi/event ]; then
+				modprobe ospm_system
+			fi
+			msg_starting acpid $PROGRAM_ARGS
+			daemon acpid
+			RETVAL=$?
+			[ $RETVAL -eq 0 ] && touch /var/lock/subsys/acpid
 		else
 			msg_already_running acpid
-	      	fi
+		fi
 	    	;;
 	stop)
 		# Stop daemons.
