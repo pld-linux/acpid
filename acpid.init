@@ -11,6 +11,12 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
+# Initial values (just in case):
+LAPTOP_MODULES=""
+VARIOUS_MODULES=""
+ASUS_LAPTOP=""
+TOSHIBA_LAPTOP=""
+
 # Configuration file.
 . /etc/sysconfig/acpid
 
@@ -28,7 +34,24 @@ case "$1" in
 		if is_yes "$MODPROBE_OSPM_SYSTEM"; then
 			_modprobe single ospm_system
 		fi
+		# starting:
 		msg_starting acpid $PROGRAM_ARGS
+		# Load additional modules:
+		if [ -z "$LAPTOP_MODULES" ]; then
+			for i in "$LAPTOP_MODULES"; do
+				_modprobe single $i
+			done
+		elif [ -z "$VARIOUS_MODULES" ] then
+			for i in "$VARIOUS_MODULES"; do
+				_modprobe single $i
+			done
+		fi
+		# Determine if it's ASUS or TOSHIBA laptop
+		if is_yes "$ASUS_LAPTOP"; then
+			_modprobe asus_acpi
+		elif is_yes "$TOSHIBA_LAPTOP"; then
+			_modprobe toshiba_acpi
+		fi
 		daemon acpid
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/acpid
