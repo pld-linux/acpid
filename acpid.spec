@@ -30,7 +30,7 @@ acpid to demon przekazuj±cy zdarzenia ACPI do programów w user-space.
 
 %prep
 %setup -q
-#%patch0 -p1
+%patch0 -p1
 
 %build
 %{__make}
