@@ -6,6 +6,7 @@ Release:	3
 License:	GPL
 Group:		Daemons
 Source0:	http://dl.sourceforge.net/acpid/%{name}-%{version}.tar.gz
+# Source0-md5:	0c03d957aec557857ffc7941243083d9
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
