@@ -5,12 +5,12 @@
 Summary:	ACPI Event Daemon
 Summary(pl):	Demon zdarzeñ ACPI
 Name:		acpid
-Version:	1.0.3
-Release:	2
+Version:	1.0.4
+Release:	1
 License:	GPL v2
 Group:		Daemons
 Source0:	http://dl.sourceforge.net/acpid/%{name}-%{version}.tar.gz
-# Source0-md5:	8513c19d0f14ff396ea73caaea7f2ef8
+# Source0-md5:	3aff94e92186e99ed5fd6dcee2db7c74
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
@@ -49,7 +49,7 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/acpid
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/acpid
 install samples/acpi_handler.sh $RPM_BUILD_ROOT%{_sbindir}/power.sh
 # Or create halt_on_power_button subpackage
-install %{SOURCE4} $RPM_BUILD_ROOT/etc/acpi/events
+install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/events
 
 
 > $RPM_BUILD_ROOT/var/log/acpid
@@ -85,14 +85,14 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc Changelog README TODO 
+%doc Changelog README TODO
 %dir %{_sysconfdir}/acpi
 %dir %{_sysconfdir}/acpi/events
 %dir %{_sysconfdir}/acpi/actions
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/logrotate.d/acpid
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/acpid
 %attr(754,root,root) /etc/rc.d/init.d/acpid
-%config(noreplace) %verify(not size mtime md5) /etc/sysconfig/acpid
-%config(noreplace,missingok) %verify(not size mtime md5) %{_sysconfdir}/acpi/events/*.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/acpid
+%config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/acpi/events/*.conf
 %attr(755,root,root) %{_sbindir}/acpid
 %attr(755,root,root) %{_sbindir}/power.sh
 %attr(640,root,root) %ghost /var/log/acpid
