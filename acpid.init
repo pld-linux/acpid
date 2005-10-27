@@ -49,6 +49,8 @@ case "$1" in
 			_modprobe asus_acpi
 		elif is_yes "$TOSHIBA_LAPTOP"; then
 			_modprobe toshiba_acpi
+		elif is_yes "$IBM_LAPTOP"; then
+			_modprobe ibm_acpi
 		fi
 		# starting:
 		msg_starting acpid $PROGRAM_ARGS
