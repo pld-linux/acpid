@@ -16,6 +16,7 @@ Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
 Source4:	%{name}.halt_on_power_button.conf
 Patch0:		%{name}-powersh_fix.patch
+Patch1:		%{name}-gcc4.patch
 URL:		http://acpid.sourceforge.net/
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
@@ -32,6 +33,7 @@ acpid to demon przekazuj±cy zdarzenia ACPI do programów w user-space.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__make}
