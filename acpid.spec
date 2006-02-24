@@ -18,8 +18,9 @@ Source4:	%{name}.halt_on_power_button.conf
 Patch0:		%{name}-powersh_fix.patch
 Patch1:		%{name}-gcc4.patch
 URL:		http://acpid.sourceforge.net/
-PreReq:		rc-scripts
+BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
+Requires:	rc-scripts
 Obsoletes:	apmd
 Obsoletes:	poweracpid
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -53,7 +54,6 @@ install samples/acpi_handler.sh $RPM_BUILD_ROOT%{_sbindir}/power.sh
 # Or create halt_on_power_button subpackage
 install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/events
 
-
 > $RPM_BUILD_ROOT/var/log/acpid
 
 %clean
@@ -61,29 +61,19 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add acpid
-if [ -f /var/lock/subsys/acpid ]; then
-	/etc/rc.d/init.d/acpid restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/acpid start\" to start ACPI daemon."
-fi
+%service acpid restart "ACPI daemon"
 
 %preun
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/acpid ]; then
-		/etc/rc.d/init.d/acpid stop>&2
-	fi
+	%service acpid stop
 	/sbin/chkconfig --del acpid
 fi
 
-# %post halt_on_power_button
-# if [ -f /var/lock/subsys/acpid ]; then
-#     /etc/rc.d/init.d/acpid reload
-# fi
+# %%post halt_on_power_button
+# %%service -q acpid reload
 
-# %postun halt_on_power_button
-# if [ -f /var/lock/subsys/acpid ]; then
-#     /etc/rc.d/init.d/acpid reload
-# fi
+# %%postun halt_on_power_button
+# %%service -q acpid reload
 
 %files
 %defattr(644,root,root,755)
