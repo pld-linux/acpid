@@ -28,7 +28,8 @@ case "$1" in
 		# put computer to sleep
 		#echo mem > /sys/power/state
 
-		# if you want to specify separate commands for lid open/close uncomment this section:
+		# if you want to specify separate commands for
+		# lid open/close uncomment this section:
 
 		#NUMBER=`printf "%d" "0x$4"`
 		#EVEN=`dc -e "1 k $NUMBER 2 / p" | grep "\.0"`
