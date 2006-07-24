@@ -31,7 +31,7 @@ case "$1" in
 		# if you want to specify separate commands for
 		# lid open/close uncomment this section:
 
-		#ODD=`echo $4 | grep "1$\|3$\|5$\|7$\|9\|b$\|d$\|f$"`
+		#ODD=`echo $4 | grep "[13579bdf]$"`
 		#if [ "$ODD" ]; then
 		#	logger "acpid: lid close action is not defined"
 		#else
