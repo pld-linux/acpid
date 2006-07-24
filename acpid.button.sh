@@ -31,9 +31,8 @@ case "$1" in
 		# if you want to specify separate commands for
 		# lid open/close uncomment this section:
 
-		#NUMBER=`printf "%d" "0x$4"`
-		#EVEN=`dc -e "1 k $NUMBER 2 / p" | grep "\.0"`
-		#if [ ! "$EVEN" ]; then
+		#ODD=`echo $4 | grep "1$\|3$\|5$\|7$\|9\|b$\|d$\|f$"`
+		#if [ "$ODD" ]; then
 		#	logger "acpid: lid close action is not defined"
 		#else
 		#	logger "acpid: lid open action is not defined"
