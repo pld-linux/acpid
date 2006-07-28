@@ -73,7 +73,7 @@ fi
 %triggerpostun -- %{name} <= 1.0.4-3
 %banner -e %{name} << EOF
 Default configuration files have changed.
-You might want to review your configuration in /etc/acpid
+You might want to review your configuration in /etc/acpi
 EOF
 
 %files
