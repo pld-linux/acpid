@@ -18,7 +18,7 @@ case "$STATE" in
 		logger "acpid: AC connector plugged in."
 		# deactivate standby (spindown) timeout for the drive
 		#hdparm -q -S 0 /dev/hda
-		# handle proccessor
+		# handle processor
 		#echo 0 > /proc/acpi/processor/CPU0/throttling
 		#echo 0 > /proc/acpi/processor/CPU0/performance
 		;;
