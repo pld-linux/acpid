@@ -19,13 +19,13 @@ case "$1" in
 	#hibernate
 	;;
   button/sleep)
-	logger "acpid: $1 action is not defined"
+	logger "acpid: $1 action is not defined."
 	# put computer to sleep
 	#echo mem > /sys/power/state
 	#hibernate
 	;;
   button/lid)
-	logger "acpid: $1 action is not defined"
+	logger "acpid: $1 action is not defined."
 	# put computer to sleep
 	#echo mem > /sys/power/state
 
@@ -40,6 +40,6 @@ case "$1" in
 	#fi
 	;;
   *)
-	logger "acpid: $1 action is not defined"
+	logger "acpid: $1 action is not defined."
 	;;
 esac

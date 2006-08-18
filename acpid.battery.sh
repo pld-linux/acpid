@@ -57,7 +57,7 @@ esac
 case "$BAT_STATE" in
   warning)
 	# battery passed acpi alarm state and AC unplugged
-	logger "acpid: Remaining `basename $BAT` battery capacity low"
+	logger "acpid: Remaining `basename $BAT` battery capacity low."
 	# play alarm sound
 	#play /path_to/alarm.wav
 	# put computer to sleep
@@ -66,7 +66,7 @@ case "$BAT_STATE" in
 	;;
   critical)
 	# some laptops generate acpi event when machine is about to turn off
-	logger "acpid: Remaining `basename $BAT` battery capacity VERY low"
+	logger "acpid: Remaining `basename $BAT` battery capacity VERY low."
 	# play alarm sound
 	#play /path_to/alarm.wav
 	# put computer to sleep
@@ -78,6 +78,6 @@ case "$BAT_STATE" in
 	;;
   *)
 	# battery in undetermined state
-	logger "acpid: Could not determine `basename $BAT` battery state"
+	logger "acpid: Could not determine `basename $BAT` battery state."
 	;;
 esac
