@@ -11,7 +11,7 @@ fi
 set $*
 
 AC=/proc/acpi/ac_adapter/AC
-BAT=/proc/acpi/battery/BAT0
+BAT=/proc/acpi/battery/$2
 
 # get the AC connector state (plugged/unplugged) from /proc filesystem.
 AC_STATE=`sed -n 's/^.*\(off\|on\)-line.*/\1/p' $AC/state`
