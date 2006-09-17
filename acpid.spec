@@ -6,7 +6,7 @@ Summary:	ACPI Event Daemon
 Summary(pl):	Demon zdarzeñ ACPI
 Name:		acpid
 Version:	1.0.4
-Release:	6
+Release:	7
 License:	GPL v2
 Group:		Daemons
 Source0:	http://dl.sourceforge.net/acpid/%{name}-%{version}.tar.gz
@@ -38,7 +38,9 @@ acpid to demon przekazuj±cy zdarzenia ACPI do programów w user-space.
 %patch0 -p1
 
 %build
-%{__make}
+%{__make} \
+	CC="%{__cc}" \
+	CFLAGS='-Wall -Werror %{rpmcflags} $(DEFS)'
 
 %install
 rm -rf $RPM_BUILD_ROOT
