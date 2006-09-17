@@ -20,11 +20,8 @@ TOSHIBA_LAPTOP=""
 # Configuration file.
 . /etc/sysconfig/acpid
 
-RETVAL=0
-# See how we were called.
-case "$1" in
-  start)
-	# Start daemons.
+# Start daemons.
+start() {
 	if [ ! -f /var/lock/subsys/acpid ]; then
 		if [ ! -d /proc/acpi/button ]; then
 			_modprobe ospm_button
@@ -60,9 +57,10 @@ case "$1" in
 	else
 		msg_already_running acpid
 	fi
-	;;
-  stop)
-	# Stop daemons.
+}
+
+# Stop daemons.
+stop() {
 	if [ -f /var/lock/subsys/acpid ]; then
 		msg_stopping acpid
 		killproc acpid
@@ -70,6 +68,20 @@ case "$1" in
 	else
 		msg_not_running acpid
 	fi
+}
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+  	stop
+	;;
+  restart)
+	stop
+	start
 	;;
   reload|force-reload)
 	if [ -f /var/lock/subsys/acpid ]; then
@@ -81,14 +93,8 @@ case "$1" in
 		exit 7
 	fi
 	;;
-  restart)
-	$0 stop
-	$0 start
-	exit $?
-	;;
   status)
 	status acpid
-	exit $?
 	;;
   *)
 	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
