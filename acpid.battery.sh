@@ -38,7 +38,7 @@ if [ "$AC_STATE" != "$AC_STATE_OLD" ]; then
 	logger "acpid: `basename $AC` connector plugged in. State: $AC_STATE."
 	# deactivate standby (spindown) timeout for the drive
 	#hdparm -q -S 0 /dev/hda
-	# handle processor
+	# handle processor - this feature is deprecated for Kernel > 2.6.11.
 	#echo 0 > /proc/acpi/processor/CPU0/throttling
 	#echo 0 > /proc/acpi/processor/CPU0/performance
 	;;
@@ -48,7 +48,7 @@ if [ "$AC_STATE" != "$AC_STATE_OLD" ]; then
 	# activate standby (spindown) timeout for the drive
 	# timeout 5 minutes (man hdparm, for more informations)
 	#hdparm -q -S 60 /dev/sda 
-	# handle processor
+	# handle processor - this feature is deprecated for Kernel > 2.6.11.
 	#echo 4 > /proc/acpi/processor/CPU0/throttling
 	#echo 3 > /proc/acpi/processor/CPU0/performance
 	;;
