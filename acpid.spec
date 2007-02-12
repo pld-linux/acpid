@@ -3,7 +3,7 @@
 # - better default configuration of events in /etc/acpi
 # - processor and fan module support (?)
 Summary:	ACPI Event Daemon
-Summary(pl):	Demon zdarzeñ ACPI
+Summary(pl.UTF-8):   Demon zdarzeÅ„ ACPI
 Name:		acpid
 Version:	1.0.4
 Release:	7
@@ -30,8 +30,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 acpid is a daemon that dispatches ACPI events to user-space programs.
 
-%description -l pl
-acpid to demon przekazuj±cy zdarzenia ACPI do programów w user-space.
+%description -l pl.UTF-8
+acpid to demon przekazujÄ…cy zdarzenia ACPI do programÃ³w w user-space.
 
 %prep
 %setup -q
