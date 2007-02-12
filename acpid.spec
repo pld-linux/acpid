@@ -3,7 +3,7 @@
 # - better default configuration of events in /etc/acpi
 # - processor and fan module support (?)
 Summary:	ACPI Event Daemon
-Summary(pl.UTF-8):   Demon zdarzeń ACPI
+Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
 Version:	1.0.4
 Release:	7
