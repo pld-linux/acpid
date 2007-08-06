@@ -6,7 +6,7 @@ Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
 Version:	1.0.4
-Release:	7
+Release:	8
 License:	GPL v2
 Group:		Daemons
 Source0:	http://dl.sourceforge.net/acpid/%{name}-%{version}.tar.gz
@@ -23,8 +23,8 @@ URL:		http://acpid.sourceforge.net/
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
-Obsoletes:	apmd
 Obsoletes:	poweracpid
+Conflicts:	apmd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
