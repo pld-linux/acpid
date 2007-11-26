@@ -24,30 +24,30 @@ TOSHIBA_LAPTOP=""
 start() {
 	if [ ! -f /var/lock/subsys/acpid ]; then
 		if [ ! -d /proc/acpi/button ]; then
-			_modprobe ospm_button
-			_modprobe button
+			modprobe -s ospm_button
+			modprobe -s button
 		fi
 		if [ "$(kernelverser)" -lt "002006" ] && is_yes "$MODPROBE_OSPM_SYSTEM"; then
-			_modprobe single ospm_system
+			modprobe -s ospm_system
 		fi
 		# Load additional modules:
 		if [ -n "$LAPTOP_MODULES" ]; then
 			for i in $LAPTOP_MODULES; do
-				_modprobe single $i
+				modprobe -s $i
 			done
 		fi
 		if [ -n "$VARIOUS_MODULES" ]; then
 			for i in $VARIOUS_MODULES; do
-				_modprobe single $i
+				modprobe -s $i
 			done
 		fi
 		# Determine if it's ASUS or TOSHIBA laptop
 		if is_yes "$ASUS_LAPTOP"; then
-			_modprobe asus_acpi
+			modprobe -s asus_acpi
 		elif is_yes "$TOSHIBA_LAPTOP"; then
-			_modprobe toshiba_acpi
+			modprobe -s toshiba_acpi
 		elif is_yes "$IBM_LAPTOP"; then
-			_modprobe ibm_acpi
+			modprobe -s ibm_acpi
 		fi
 		# starting:
 		msg_starting acpid $PROGRAM_ARGS
