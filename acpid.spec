@@ -6,8 +6,8 @@ Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
 Version:	1.0.6
-Release:	2
-License:	GPL v2
+Release:	3
+License:	GPL v2+
 Group:		Daemons
 Source0:	http://dl.sourceforge.net/acpid/%{name}-%{version}.tar.gz
 # Source0-md5:	5c9b705700df51d232be223b6ab6414d
@@ -22,8 +22,10 @@ URL:		http://acpid.sourceforge.net/
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
-Obsoletes:	poweracpid
-Conflicts:	apmd
+Provides:	acpi-daemon
+Obsoletes:	acpi-daemon
+Obsoletes:	apm-daemon
+ExclusiveArch:	%{ix86} %{x8664} ia64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -79,14 +81,14 @@ EOF
 %files
 %defattr(644,root,root,755)
 %doc Changelog README TODO
+%attr(755,root,root) %{_sbindir}/acpid
 %dir %{_sysconfdir}/acpi
 %dir %{_sysconfdir}/acpi/events
+%config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/acpi/events/*.conf
 %dir %{_sysconfdir}/acpi/actions
+%attr(754,root,root) %config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/acpi/actions/*.sh
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/acpid
 %attr(754,root,root) /etc/rc.d/init.d/acpid
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/acpid
-%config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/acpi/events/*.conf
-%attr(754,root,root) %config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/acpi/actions/*.sh
-%attr(755,root,root) %{_sbindir}/acpid
 %attr(640,root,root) %ghost /var/log/acpid
 %{_mandir}/man8/acpid.8*
