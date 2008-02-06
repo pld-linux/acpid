@@ -6,7 +6,7 @@ Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
 Version:	1.0.6
-Release:	3
+Release:	4
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://dl.sourceforge.net/acpid/%{name}-%{version}.tar.gz
@@ -72,8 +72,8 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del acpid
 fi
 
-%triggerpostun -- %{name} <= 1.0.4-3
-%banner -e %{name} << EOF
+%triggerpostun -- %{name} < 1.0.4-4
+%banner -e %{name} << 'EOF'
 Default configuration files have changed.
 You might want to review your configuration in /etc/acpi
 EOF
