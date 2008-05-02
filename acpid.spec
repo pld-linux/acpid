@@ -40,7 +40,7 @@ acpid to demon przekazujący zdarzenia ACPI do programów w user-space.
 %build
 %{__make} \
 	CC="%{__cc}" \
-	CFLAGS='-Wall -Werror %{rpmcflags} $(DEFS)'
+	CFLAGS='-Wall -Werror %{rpmcflags} -D_GNU_SOURCE $(DEFS)'
 
 %install
 rm -rf $RPM_BUILD_ROOT
