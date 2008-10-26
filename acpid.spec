@@ -6,7 +6,7 @@ Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
 Version:	1.0.6
-Release:	5
+Release:	6
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://dl.sourceforge.net/acpid/%{name}-%{version}.tar.gz
@@ -32,7 +32,37 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 acpid is a daemon that dispatches ACPI events to user-space programs.
 
 %description -l pl.UTF-8
-acpid to demon przekazujący zdarzenia ACPI do programów w user-space.
+acpid to demon przekazujący zdarzenia ACPI do programów w
+user-space.
+
+%package policy
+Summary:	ACPID policy files
+Summary:	Pliki z polityką dla ACPID
+Group:		Daemons
+Requires:	%{name} > 1.0.6-5
+
+%description policy
+This package contains scripts and configuration files which allow
+ACPID to take action on incoming acpi events (eg. to run a script that
+suspends the system when the power button is pressed).
+
+Notice: on most current systems you DO NOT want this package
+installed, since there are other software packages responsible for
+handling acpi events (one example being gnome-power-manager) and
+having ACPID also respond will lead to problems. In such cases ACPID
+should only act as a message broker.
+
+%description policy -l pl.UTF-8
+Ta paczka zawiera skrypty i pliki konfiguracyjne, które umożliwiają
+demonowi ACPI wykonywanie operacji na podstawie przychodzących
+zdarzeń acpi (np. uruchomienie skryptu usypiającego system, gdy
+użytkownik naciśnie przycisk zasilania).
+
+Uwaga: na większości obecnych systemów NIE CHCESZ instalować tej
+paczki, gdyż za reagowanie na zdarzenia acpi są w nich
+odpowiedzialne inne programy (np. gnome-power-manager), więc ACPID by
+tylko przeszkadzał. W takich przypadkach demon ACPI powinien
+działać wyłącznie jako dyspozytor wiadomości.
 
 %prep
 %setup -q
@@ -84,11 +114,14 @@ EOF
 %attr(755,root,root) %{_sbindir}/acpid
 %dir %{_sysconfdir}/acpi
 %dir %{_sysconfdir}/acpi/events
-%config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/acpi/events/*.conf
 %dir %{_sysconfdir}/acpi/actions
-%attr(754,root,root) %config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/acpi/actions/*.sh
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/acpid
 %attr(754,root,root) /etc/rc.d/init.d/acpid
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/acpid
 %attr(640,root,root) %ghost /var/log/acpid
 %{_mandir}/man8/acpid.8*
+
+%files policy
+%defattr(644,root,root,755)
+%config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/acpi/events/*.conf
+%attr(754,root,root) %config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/acpi/actions/*.sh
