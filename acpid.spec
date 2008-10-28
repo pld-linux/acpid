@@ -32,37 +32,36 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 acpid is a daemon that dispatches ACPI events to user-space programs.
 
 %description -l pl.UTF-8
-acpid to demon przekazujący zdarzenia ACPI do programów w
-user-space.
+acpid to demon przekazujący zdarzenia ACPI do programów w user-space.
 
 %package policy
 Summary:	ACPID policy files
-Summary:	Pliki z polityką dla ACPID
+Summary(pl.UTF-8):	Pliki z polityką dla ACPID
 Group:		Daemons
-Requires:	%{name} > 1.0.6-5
+Requires:	%{name} = %{version}-%{release}
 
 %description policy
 This package contains scripts and configuration files which allow
-ACPID to take action on incoming acpi events (eg. to run a script that
+ACPID to take action on incoming ACPI events (eg. to run a script that
 suspends the system when the power button is pressed).
 
 Notice: on most current systems you DO NOT want this package
 installed, since there are other software packages responsible for
-handling acpi events (one example being gnome-power-manager) and
+handling ACPI events (one example being gnome-power-manager) and
 having ACPID also respond will lead to problems. In such cases ACPID
 should only act as a message broker.
 
 %description policy -l pl.UTF-8
-Ta paczka zawiera skrypty i pliki konfiguracyjne, które umożliwiają
+Ten pakiet zawiera skrypty i pliki konfiguracyjne, które umożliwiają
 demonowi ACPI wykonywanie operacji na podstawie przychodzących
-zdarzeń acpi (np. uruchomienie skryptu usypiającego system, gdy
+zdarzeń ACPI (np. uruchomienie skryptu usypiającego system, gdy
 użytkownik naciśnie przycisk zasilania).
 
-Uwaga: na większości obecnych systemów NIE CHCESZ instalować tej
-paczki, gdyż za reagowanie na zdarzenia acpi są w nich
-odpowiedzialne inne programy (np. gnome-power-manager), więc ACPID by
-tylko przeszkadzał. W takich przypadkach demon ACPI powinien
-działać wyłącznie jako dyspozytor wiadomości.
+Uwaga: na większości obecnych systemów NIE NALEŻY instalować tego
+pakietu, gdyż za reagowanie na zdarzenia ACPI są w nich odpowiedzialne
+inne programy (np. gnome-power-manager), więc ACPID by tylko
+przeszkadzał. W takich przypadkach demon ACPI powinien działać
+wyłącznie jako dyspozytor wiadomości.
 
 %prep
 %setup -q
