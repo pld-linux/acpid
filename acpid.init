@@ -51,7 +51,7 @@ start() {
 		fi
 		# starting:
 		msg_starting acpid $PROGRAM_ARGS
-		daemon acpid
+		daemon /usr/sbin/acpid
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/acpid
 	else
