@@ -23,51 +23,65 @@ TOSHIBA_LAPTOP=""
 # Start daemons.
 start() {
 	if [ ! -f /var/lock/subsys/acpid ]; then
-		if [ ! -d /proc/acpi/button ]; then
-			modprobe -s ospm_button
-			modprobe -s button
-		fi
-		if [ "$(kernelverser)" -lt "002006" ] && is_yes "$MODPROBE_OSPM_SYSTEM"; then
-			modprobe -s ospm_system
-		fi
-		# Load additional modules:
-		if [ -n "$LAPTOP_MODULES" ]; then
-			for i in $LAPTOP_MODULES; do
-				modprobe -s $i
-			done
-		fi
-		if [ -n "$VARIOUS_MODULES" ]; then
-			for i in $VARIOUS_MODULES; do
-				modprobe -s $i
-			done
-		fi
-		# Determine if it's ASUS or TOSHIBA laptop
-		if is_yes "$ASUS_LAPTOP"; then
-			modprobe -s asus_acpi
-		elif is_yes "$TOSHIBA_LAPTOP"; then
-			modprobe -s toshiba_acpi
-		elif is_yes "$IBM_LAPTOP"; then
-			modprobe -s ibm_acpi
-		fi
-		# starting:
-		msg_starting acpid $PROGRAM_ARGS
-		daemon /usr/sbin/acpid
-		RETVAL=$?
-		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/acpid
-	else
-		msg_already_running acpid
+		msg_already_running "ACPI Event Daemon"
+		return
 	fi
+	
+	if [ ! -d /proc/acpi/button ]; then
+		modprobe -s ospm_button
+		modprobe -s button
+	fi
+	if [ "$(kernelverser)" -lt "002006" ] && is_yes "$MODPROBE_OSPM_SYSTEM"; then
+		modprobe -s ospm_system
+	fi
+	# Load additional modules:
+	if [ -n "$LAPTOP_MODULES" ]; then
+		for i in $LAPTOP_MODULES; do
+			modprobe -s $i
+		done
+	fi
+	if [ -n "$VARIOUS_MODULES" ]; then
+		for i in $VARIOUS_MODULES; do
+			modprobe -s $i
+		done
+	fi
+	# Determine if it's ASUS or TOSHIBA laptop
+	if is_yes "$ASUS_LAPTOP"; then
+		modprobe -s asus_acpi
+	elif is_yes "$TOSHIBA_LAPTOP"; then
+		modprobe -s toshiba_acpi
+	elif is_yes "$IBM_LAPTOP"; then
+		modprobe -s ibm_acpi
+	fi
+
+	# starting:
+	msg_starting "ACPI Event Daemon"
+	daemon /usr/sbin/acpid $PROGRAM_ARGS
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/acpid
 }
 
 # Stop daemons.
 stop() {
-	if [ -f /var/lock/subsys/acpid ]; then
-		msg_stopping acpid
-		killproc acpid
-		rm -f /var/lock/subsys/acpid >/dev/null 2>&1
-	else
-		msg_not_running acpid
+	if [ ! -f /var/lock/subsys/acpid ]; then
+		msg_not_running "ACPI Event Daemon"
+		return
 	fi
+
+	msg_stopping "ACPI Event Daemon"
+	killproc acpid
+	rm -f /var/lock/subsys/acpid >/dev/null 2>&1
+}
+
+condrestart() {
+	if [ ! -f /var/lock/subsys/acpid ]; then
+		msg_not_running "ACPI Event Daemon"
+		RETVAL=$1
+		return
+	fi
+
+	stop
+	start
 }
 
 RETVAL=0
@@ -83,13 +97,16 @@ case "$1" in
 	stop
 	start
 	;;
+  try-restart)
+	condrestart 0
+	;;
   reload|force-reload)
 	if [ -f /var/lock/subsys/acpid ]; then
-		msg_reloading acpid
+		msg_reloading "ACPI Event Daemon"
 		killproc acpid -HUP
 		RETVAL=$?
 	else
-		msg_not_running acpid
+		msg_not_running "ACPI Event Daemon"
 		exit 7
 	fi
 	;;
@@ -97,7 +114,7 @@ case "$1" in
 	status acpid
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
+	msg_usage "$0 {start|stop|restart|try-restart|reload|force-reload|status}"
 	exit 3
 esac
 
