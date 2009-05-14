@@ -22,7 +22,7 @@ TOSHIBA_LAPTOP=""
 
 # Start daemons.
 start() {
-	if [ ! -f /var/lock/subsys/acpid ]; then
+	if [ -f /var/lock/subsys/acpid ]; then
 		msg_already_running "ACPI Event Daemon"
 		return
 	fi
