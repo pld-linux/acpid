@@ -31,9 +31,7 @@ start() {
 		modprobe -s ospm_button
 		modprobe -s button
 	fi
-	if [ "$(kernelverser)" -lt "002006" ] && is_yes "$MODPROBE_OSPM_SYSTEM"; then
-		modprobe -s ospm_system
-	fi
+
 	# Load additional modules:
 	if [ -n "$LAPTOP_MODULES" ]; then
 		for i in $LAPTOP_MODULES; do
