@@ -30,7 +30,7 @@ load_modules() {
 	[ -f /proc/modules ] || return 0
 
 	if [ "$MODULES" = "all" ]; then
-		MODULES=$(sed -rn 's#^kernel/(drivers|misc)/acpi/([^/]+/)*(.*)\.ko(\.gz)?:.*#\3#p' /lib/modules/$(uname -r)/modules.dep)
+		MODULES=$(sed -rn 's#^kernel/(drivers/acpi|drivers/misc/.*_acpi)/([^/]+/)*(.*)\.ko\.gz:.*#\3#p' /lib/modules/$(uname -r)/modules.dep)
 	else
 		# assemble from old lists
 		MODULES="$MODULES $LAPTOP_MODULES"
