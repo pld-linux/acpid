@@ -12,8 +12,7 @@ PROGRAM_ARGS=""
 # Various ACPI modules, usefull on destop system
 #VARIOUS_MODULES="fan processor thermal"
 
-# If you have ASUS, TOSHIBA or IBM laptop you can try to uncomment one of
+# If you have ASUS or TOSHIBA laptop you can try to uncomment one of
 # this options to get additional features provided by acpi in this laptops
 #ASUS_LAPTOP="yes"
 #TOSHIBA_LAPTOP="yes"
-#IBM_LAPTOP="yes"
