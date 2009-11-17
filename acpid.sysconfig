@@ -3,16 +3,24 @@
 # Define nice level for acpid:
 SERVICE_RUN_NICE_LEVEL="+0"
 
-# Program arguments:
+# Program arguments passed to acpid commandline
 PROGRAM_ARGS=""
+
+# Modules to load before starting acpid
 
 # These modules are needed on laptops.
 #LAPTOP_MODULES="ac battery"
 
-# Various ACPI modules, usefull on destop system
+# Various ACPI modules, useful on destop system
 #VARIOUS_MODULES="fan processor thermal"
 
-# If you have ASUS or TOSHIBA laptop you can try to uncomment one of
+# If you have ASUS, TOSHIBA or IBM (thinkpad) laptop you can try to uncomment one of
 # this options to get additional features provided by acpi in this laptops
 #ASUS_LAPTOP="yes"
 #TOSHIBA_LAPTOP="yes"
+#IBM_LAPTOP="yes"
+
+# MODULES is a space seperated list of modules to load, or "all" to load all
+# acpi drivers, or commented out to load modules from above variables
+#MODULES="battery ac processor button fan thermal video"
+#MODULES="all"

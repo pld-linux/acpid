@@ -8,6 +8,9 @@
 #
 # pidfile:	/var/run/acpid.pid
 
+# Check for ACPI event-file support on kernel side
+[ -r /proc/acpi/event ] || exit 0
+
 # Source function library.
 . /etc/rc.d/init.d/functions
 
@@ -16,9 +19,42 @@ LAPTOP_MODULES=""
 VARIOUS_MODULES=""
 ASUS_LAPTOP=""
 TOSHIBA_LAPTOP=""
+MODULES=""
 
 # Configuration file.
 . /etc/sysconfig/acpid
+
+# As the name says. If the kernel supports modules,
+# it'll try to load the ones listed in "MODULES".
+load_modules() {
+	[ -f /proc/modules ] || return 0
+
+	if [ "$MODULES" = "all" ]; then
+		MODULES=$(sed -rn 's#^kernel/(drivers|misc)/acpi/([^/]+/)*(.*)\.ko(\.gz)?:.*#\3#p' /lib/modules/$(uname -r)/modules.dep)
+	else
+		# assemble from old lists
+		MODULES="$MODULES $LAPTOP_MODULES"
+		MODULES="$MODULES $VARIOUS_MODULES"
+		if is_yes "$ASUS_LAPTOP"; then
+			MODULES="$MODULES asus_acpi"
+		fi
+		if is_yes "$TOSHIBA_LAPTOP"; then
+			MODULES="$MODULES toshiba_acpi"
+		fi
+		if is_yes "$IBM_LAPTOP"; then
+			MODULES="$MODULES ibm_acpi"
+		fi
+		# strip spaces
+		MODULES=$(echo ${MODULES})
+	fi
+
+	if [ -z "$MODULES" ]; then
+		return
+	fi
+
+	show "Loading ACPI modules..."; busy
+	modprobe --all $MODULES && ok || fail
+}
 
 # Start daemons.
 start() {
@@ -26,28 +62,8 @@ start() {
 		msg_already_running "ACPI Event Daemon"
 		return
 	fi
-	
-	if [ ! -d /proc/acpi/button ]; then
-		modprobe -s button
-	fi
 
-	# Load additional modules:
-	if [ -n "$LAPTOP_MODULES" ]; then
-		for i in $LAPTOP_MODULES; do
-			modprobe -s $i
-		done
-	fi
-	if [ -n "$VARIOUS_MODULES" ]; then
-		for i in $VARIOUS_MODULES; do
-			modprobe -s $i
-		done
-	fi
-	# Determine if it's ASUS or TOSHIBA laptop
-	if is_yes "$ASUS_LAPTOP"; then
-		modprobe -s asus_acpi
-	elif is_yes "$TOSHIBA_LAPTOP"; then
-		modprobe -s toshiba_acpi
-	fi
+	load_modules
 
 	# starting:
 	msg_starting "ACPI Event Daemon"
