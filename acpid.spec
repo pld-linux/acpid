@@ -7,11 +7,12 @@
 #   also it does not allow *.conf files (missing "."), which is not backward
 #   compatible (custom files can be left unprocessed)
 #   but if patch is made to allow ".", must consider to ignore .rpm{new,old,save} files
+# - build and package kacpimon
 Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
 Version:	2.0.3
-Release:	0.2
+Release:	0.3
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://tedfelix.com/linux/%{name}-%{version}.tar.gz
@@ -75,16 +76,16 @@ wyłącznie jako dyspozytor wiadomości.
 %{__make} \
 	CC="%{__cc}" \
 	LDFLAGS="%{rpmldflags}" \
-	CFLAGS='-Wall -Werror %{rpmcflags} -D_GNU_SOURCE $(DEFS)'
+	OPT="%{rpmcflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/{logrotate.d,rc.d/init.d,sysconfig},/var/log} \
-	$RPM_BUILD_ROOT{%{_sysconfdir}/acpi/{events,actions},%{_sbindir},%{_bindir},%{_mandir}/man8}
+install -d $RPM_BUILD_ROOT{/etc/{logrotate.d,rc.d/init.d,sysconfig},/var/log} \
+	$RPM_BUILD_ROOT%{_sysconfdir}/acpi/{events,actions}
 
-install -p acpid $RPM_BUILD_ROOT%{_sbindir}
-install -p acpi_listen $RPM_BUILD_ROOT%{_bindir}
-cp -a acpid.8 acpi_listen.8 $RPM_BUILD_ROOT%{_mandir}/man8
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
+
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/acpid
 cp -a %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/acpid
 cp -a %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/acpid
@@ -93,6 +94,7 @@ cp -a %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/events/battery
 install -p %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/actions/button.sh
 install -p %{SOURCE7} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/actions/battery.sh
 > $RPM_BUILD_ROOT/var/log/acpid
+rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -115,7 +117,7 @@ EOF
 
 %files
 %defattr(644,root,root,755)
-%doc Changelog README TODO
+%doc Changelog README TODO TESTPLAN
 %attr(755,root,root) %{_sbindir}/acpid
 %attr(755,root,root) %{_bindir}/acpi_listen
 %dir %{_sysconfdir}/acpi
