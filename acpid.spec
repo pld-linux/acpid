@@ -2,18 +2,20 @@
 # - better event handling in power.sh
 # - better default configuration of events in /etc/acpi
 # - processor and fan module support (?)
-# - ignore .rpmnew,.rpmsave,...
-# - try acpid via netlink:
-#   http://tedfelix.com/linux/acpid-netlink.html, http://tedfelix.com/linux/acpid-2.0.3.tar.gz
+# - run-parts(8)-like [A-Z...] regexp from Debian for config scan is evil as it
+#   is locale dependant (http://www.gentoo.org/news/en/gwn/20060522-newsletter.xml#doc_chap2)
+#   also it does not allow *.conf files (missing "."), which is not backward
+#   compatible (custom files can be left unprocessed)
+#   but if patch is made to allow ".", must consider to ignore .rpm{new,old,save} files
 Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
-Version:	1.0.10
-Release:	1
+Version:	2.0.3
+Release:	0.2
 License:	GPL v2+
 Group:		Daemons
-Source0:	http://downloads.sourceforge.net/acpid/%{name}-%{version}.tar.gz
-# Source0-md5:	61156ef32015c56dc0f2e3317f4ae09e
+Source0:	http://tedfelix.com/linux/%{name}-%{version}.tar.gz
+# Source0-md5:	6242a20d86cf0223db6fa0d58488e274
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
@@ -21,7 +23,7 @@ Source4:	%{name}.button.conf
 Source5:	%{name}.battery.conf
 Source6:	%{name}.button.sh
 Source7:	%{name}.battery.sh
-URL:		http://acpid.sourceforge.net/
+URL:		http://tedfelix.com/linux/acpid-netlink.html
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
@@ -86,8 +88,8 @@ cp -a acpid.8 acpi_listen.8 $RPM_BUILD_ROOT%{_mandir}/man8
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/acpid
 cp -a %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/acpid
 cp -a %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/acpid
-cp -a %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/events/button.conf
-cp -a %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/events/battery.conf
+cp -a %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/events/button
+cp -a %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/events/battery
 install -p %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/actions/button.sh
 install -p %{SOURCE7} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/actions/battery.sh
 > $RPM_BUILD_ROOT/var/log/acpid
@@ -128,5 +130,6 @@ EOF
 
 %files policy
 %defattr(644,root,root,755)
-%config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/acpi/events/*.conf
+%config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/acpi/events/button
+%config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/acpi/events/battery
 %attr(754,root,root) %config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/acpi/actions/*.sh
