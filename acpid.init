@@ -65,6 +65,13 @@ start() {
 
 	load_modules
 
+	if is_yes "$NETLINK"; then
+		PROGRAM_ARGS="$PROGRAM_ARGS -n"
+	fi
+	if [ "$CLIENTMAX" ]; then
+		PROGRAM_ARGS="$PROGRAM_ARGS -C $CLIENTMAX"
+	fi
+
 	# starting:
 	msg_starting "ACPI Event Daemon"
 	daemon /usr/sbin/acpid $PROGRAM_ARGS
