@@ -52,6 +52,11 @@ load_modules() {
 		return
 	fi
 
+	# see if the modules are already loaded
+	if [ "$(lsmod | grep -E '^('$(echo $MODULES | tr ' ' '|')')\b' | wc -l)" = "$(echo $MODULES | wc -w)" ]; then
+		return
+	fi
+
 	show "Loading ACPI modules..."; busy
 	modprobe --all $MODULES && ok || fail
 }
