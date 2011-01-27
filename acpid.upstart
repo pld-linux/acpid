@@ -1,0 +1,23 @@
+description "ACPI Event Daemon"
+
+# need syslog, or it will log to console
+start on local-filesystems and started SERVICE=syslog
+stop on pld.shutdown-started
+
+respawn
+
+script
+	. /etc/rc.d/init.d/functions
+
+	if [ -f /etc/sysconfig/acpid ]; then
+		. /etc/sysconfig/acpid
+	fi
+
+	if is_yes "$NETLINK"; then
+		PROGRAM_ARGS="$PROGRAM_ARGS -n"
+	fi
+	if [ "$CLIENTMAX" ]; then
+		PROGRAM_ARGS="$PROGRAM_ARGS -C $CLIENTMAX"
+	fi
+	exec /usr/sbin/acpid -f $PROGRAM_ARGS
+end script
