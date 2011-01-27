@@ -107,6 +107,18 @@ condrestart() {
 	start
 }
 
+reload() {
+	if [ -f /var/lock/subsys/acpid ]; then
+		msg_not_running "ACPI Event Daemon"
+		RETVAL=7
+		return
+	fi
+
+	msg_reloading "ACPI Event Daemon"
+	killproc acpid -HUP
+	RETVAL=$?
+}
+
 RETVAL=0
 # See how we were called.
 case "$1" in
@@ -124,20 +136,16 @@ case "$1" in
 	condrestart 0
 	;;
   reload|force-reload)
-	if [ -f /var/lock/subsys/acpid ]; then
-		msg_reloading "ACPI Event Daemon"
-		killproc acpid -HUP
-		RETVAL=$?
-	else
-		msg_not_running "ACPI Event Daemon"
-		exit 7
-	fi
+	reload
+	;;
+  load-modules)
+	load_modules
 	;;
   status)
 	status acpid
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|try-restart|reload|force-reload|status}"
+	msg_usage "$0 {start|stop|restart|try-restart|reload|force-reload|load-modules|status}"
 	exit 3
 esac
 
