@@ -14,6 +14,8 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
+upstart_controlled --except load-modules
+
 # Initial values (just in case):
 LAPTOP_MODULES=""
 VARIOUS_MODULES=""
