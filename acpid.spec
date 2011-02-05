@@ -75,8 +75,8 @@ wyłącznie jako dyspozytor wiadomości.
 %build
 %{__make} \
 	CC="%{__cc}" \
-	LDFLAGS="%{rpmldflags}" \
-	OPT="%{rpmcflags}"
+	LDFLAGS="%{rpmcflags} %{rpmldflags}" \
+	OPT="%{rpmcppflags} %{rpmcflags} -Wno-error"
 
 %install
 rm -rf $RPM_BUILD_ROOT
