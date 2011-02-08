@@ -38,7 +38,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 acpid is a daemon that dispatches ACPI events to user-space programs.
 
 %description -l pl.UTF-8
-acpid to demon przekazujący zdarzenia ACPI do programów w user-space.
+acpid to demon przekazujący zdarzenia ACPI do programów w przestrzeni
+użytkownika.
 
 %package policy
 Summary:	ACPID policy files
