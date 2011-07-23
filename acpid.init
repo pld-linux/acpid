@@ -8,9 +8,6 @@
 #
 # pidfile:	/var/run/acpid.pid
 
-# Check for ACPI event-file support on kernel side
-[ -r /proc/acpi/event ] || exit 0
-
 # Source function library.
 . /etc/rc.d/init.d/functions
 
