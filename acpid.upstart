@@ -1,7 +1,7 @@
 description "ACPI Event Daemon"
 
 # need syslog, or it will log to console
-start on local-filesystems and started SERVICE=syslog
+start on local-filesystems and started SERVICE_syslog=y
 stop on pld.shutdown-started
 
 respawn

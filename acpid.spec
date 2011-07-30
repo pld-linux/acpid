@@ -12,7 +12,7 @@ Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
 Version:	2.0.10
-Release:	3
+Release:	4
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://tedfelix.com/linux/%{name}-%{version}.tar.gz
