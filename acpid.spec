@@ -24,7 +24,7 @@ Source4:	%{name}.button.conf
 Source5:	%{name}.battery.conf
 Source6:	%{name}.button.sh
 Source7:	%{name}.battery.sh
-Source8:	acpid.upstart
+Source8:	%{name}.upstart
 URL:		http://tedfelix.com/linux/acpid-netlink.html
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
