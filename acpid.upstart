@@ -7,7 +7,24 @@ stop on pld.shutdown-started
 respawn
 
 script
-	. /etc/rc.d/init.d/functions
+	is_yes() {
+		# Test syntax
+		if [ $# = 0 ]; then
+			return 2
+		fi
+
+		# Check value
+		case "$1" in
+		yes|Yes|YES|true|True|TRUE|on|On|ON|Y|y|1)
+			# true returns zero
+			return 0
+			;;
+		*)
+			# false returns one
+			return 1
+			;;
+		esac
+	}
 
 	if [ -f /etc/sysconfig/acpid ]; then
 		. /etc/sysconfig/acpid
