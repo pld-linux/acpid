@@ -120,11 +120,8 @@ fi
 %postun
 %systemd_reload
 
-%triggerpostun -- %{name} < 1.0.4-4
-%banner -e %{name} << 'EOF'
-Default configuration files have changed.
-You might want to review your configuration in /etc/acpi
-EOF
+%triggerpostun -- %{name} < 2.0.10-6
+%systemd_trigger acpid.service
 
 %files
 %defattr(644,root,root,755)
