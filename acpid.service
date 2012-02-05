@@ -1,0 +1,12 @@
+[Unit]                                                                                                                                                                           
+Description=System ACPI Daemon
+After=syslog.service
+
+[Service]
+EnvironmentFile=/etc/sysconfig/acpid
+ExecStart=/sbin/service acpid start
+ExecStop=/sbin/service acpid stop
+Type=forking
+
+[Install]
+WantedBy=multi-user.target

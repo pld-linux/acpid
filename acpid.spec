@@ -12,7 +12,7 @@ Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
 Version:	2.0.10
-Release:	5
+Release:	6
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://tedfelix.com/linux/%{name}-%{version}.tar.gz
@@ -25,6 +25,7 @@ Source5:	%{name}.battery.conf
 Source6:	%{name}.button.sh
 Source7:	%{name}.battery.sh
 Source8:	%{name}.upstart
+Source9:	%{name}.service
 URL:		http://tedfelix.com/linux/acpid-netlink.html
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
@@ -83,7 +84,7 @@ wyłącznie jako dyspozytor wiadomości.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/etc/{logrotate.d,rc.d/init.d,sysconfig,init},/var/log} \
-	$RPM_BUILD_ROOT%{_sysconfdir}/acpi/{events,actions}
+	$RPM_BUILD_ROOT{%{_sysconfdir}/acpi/{events,actions},%{systemdunitdir}}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -96,6 +97,8 @@ cp -p %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/events/button
 cp -p %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/events/battery
 install -p %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/actions/button.sh
 install -p %{SOURCE7} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/actions/battery.sh
+install %{SOURCE9} $RPM_BUILD_ROOT%{systemdunitdir}
+
 > $RPM_BUILD_ROOT/var/log/acpid
 rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
 
@@ -105,12 +108,17 @@ rm -rf $RPM_BUILD_ROOT
 %post
 /sbin/chkconfig --add acpid
 %service acpid restart "ACPI daemon"
+%systemd_post acpid.service
 
 %preun
 if [ "$1" = "0" ]; then
 	%service acpid stop
 	/sbin/chkconfig --del acpid
 fi
+%systemd_preun acpid.service
+
+%postun
+%systemd_reload
 
 %triggerpostun -- %{name} < 1.0.4-4
 %banner -e %{name} << 'EOF'
