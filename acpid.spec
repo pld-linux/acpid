@@ -12,7 +12,7 @@ Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
 Version:	2.0.10
-Release:	8
+Release:	9
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://tedfelix.com/linux/%{name}-%{version}.tar.gz
@@ -26,6 +26,7 @@ Source6:	%{name}.button.sh
 Source7:	%{name}.battery.sh
 Source8:	%{name}.upstart
 Source9:	%{name}.service
+Source10:	%{name}.preconfig
 URL:		http://tedfelix.com/linux/acpid-netlink.html
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
@@ -84,7 +85,8 @@ wyłącznie jako dyspozytor wiadomości.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{/etc/{logrotate.d,rc.d/init.d,sysconfig,init},/var/log} \
-	$RPM_BUILD_ROOT{%{_sysconfdir}/acpi/{events,actions},%{systemdunitdir}}
+	$RPM_BUILD_ROOT{%{_sysconfdir}/acpi/{events,actions},%{systemdunitdir}} \
+	$RPM_BUILD_ROOT%{_datadir}/%{name}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -98,6 +100,7 @@ cp -p %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/events/battery
 install -p %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/actions/button.sh
 install -p %{SOURCE7} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/actions/battery.sh
 install %{SOURCE9} $RPM_BUILD_ROOT%{systemdunitdir}
+install %{SOURCE10} $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 > $RPM_BUILD_ROOT/var/log/acpid
 rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
@@ -120,7 +123,18 @@ fi
 %postun
 %systemd_reload
 
-%triggerpostun -- %{name} < 2.0.10-6
+%triggerpostun -- %{name} < 2.0.10-9
+if [ -f /etc/sysconfig/acpid ]; then
+	. /etc/sysconfig/acpid
+	__PROGRAM_ARGS=
+	[ "$NETLINK" = "yes" ] && __PROGRAM_ARGS="-n"
+	[ -n "$CLIENTMAX" ] && __PROGRAM_ARGS="$__PROGRAM_ARGS -C $CLIENTMAX"
+	[ -z "$__PROGRAM_ARGS" ] && exit 0
+	cp -f /etc/sysconfig/acpid{,.rpmsave}
+	echo >>/etc/sysconfig/acpid
+	echo "# Added by rpm trigger" >>/etc/sysconfig/acpid
+	echo "PROGRAM_ARGS=\"$PROGRAM_ARGS $__PROGRAM_ARGS\"" >>/etc/sysconfig/acpid
+fi
 %systemd_trigger acpid.service
 
 %files
@@ -139,6 +153,7 @@ fi
 %attr(640,root,root) %ghost /var/log/acpid
 %{_mandir}/man8/acpid.8*
 %{_mandir}/man8/acpi_listen.8*
+%attr(755,root,root) %{_datadir}/%{name}/acpid.preconfig
 
 %files policy
 %defattr(644,root,root,755)

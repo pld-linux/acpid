@@ -6,14 +6,14 @@ SERVICE_RUN_NICE_LEVEL="+0"
 # This option changes the maximum number of non-root socket connections which
 # can be made to the acpid socket.
 # Default is 256.
-#CLIENTMAX=256
+#PROGRAM_ARGS="-C 256"
 
 # This option forces acpid to use the Linux kernel input layer and netlink
 # interface for ACPI events.
-#NETLINK=yes
+#PROGRAM_ARGS="-n"
 
 # Extra program arguments passed to acpid commandline
-PROGRAM_ARGS=""
+#PROGRAM_ARGS=""
 
 # Modules to load before starting acpid
 

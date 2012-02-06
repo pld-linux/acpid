@@ -1,0 +1,44 @@
+#!/bin/sh
+
+[ -f /etc/sysconfig/acpid ] && . /etc/sysconfig/acpid
+
+[ -f /proc/modules ] || exit 0
+
+is_yes() {
+	case "$1" in
+	yes|Yes|YES|true|True|TRUE|on|On|ON|Y|y|1)
+		return 0
+		;;
+	*)
+		return 1
+		;;
+	esac
+}
+
+if [ "$MODULES" = "all" ]; then
+	MODULES=$(sed -rn 's#^kernel/(drivers/acpi|drivers/misc/.*_acpi)/([^/]+/)*(.*)\.ko(\.gz)*:.*#\3#p' /lib/modules/$(uname -r)/modules.dep)
+else
+	# assemble from old lists
+	MODULES="$MODULES $LAPTOP_MODULES"
+	MODULES="$MODULES $VARIOUS_MODULES"
+	if is_yes "$ASUS_LAPTOP"; then
+		MODULES="$MODULES asus_acpi"
+	fi
+	if is_yes "$TOSHIBA_LAPTOP"; then
+		MODULES="$MODULES toshiba_acpi"
+	fi
+	if is_yes "$IBM_LAPTOP"; then
+		MODULES="$MODULES ibm_acpi"
+	fi
+	# strip spaces
+	MODULES=$(echo ${MODULES})
+fi
+
+if [ -z "$MODULES" ] && exit 0
+
+# see if the modules are already loaded
+if [ "$(lsmod | grep -E '^('$(echo $MODULES | tr ' ' '|')')\b' | wc -l)" = "$(echo $MODULES | wc -w)" ]; then
+	return
+fi
+
+modprobe --all $MODULES

@@ -3,10 +3,9 @@ Description=System ACPI Daemon
 After=syslog.service
 
 [Service]
-EnvironmentFile=/etc/sysconfig/acpid
-ExecStart=/sbin/service acpid start
-ExecStop=/sbin/service acpid stop
-Type=forking
+EnvironmentFile=-/etc/sysconfig/acpid
+ExecStartPre=-/usr/share/acpid/acpid.preconfig
+ExecStart=/usr/sbin/acpid -f $PROGRAM_ARGS
 
 [Install]
 WantedBy=multi-user.target
