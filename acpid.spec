@@ -12,7 +12,7 @@ Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
 Version:	2.0.10
-Release:	10
+Release:	11
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://tedfelix.com/linux/%{name}-%{version}.tar.gz
@@ -129,11 +129,12 @@ if [ -f /etc/sysconfig/acpid ]; then
 	__PROGRAM_ARGS=
 	[ "$NETLINK" = "yes" ] && __PROGRAM_ARGS="-n"
 	[ -n "$CLIENTMAX" ] && __PROGRAM_ARGS="$__PROGRAM_ARGS -C $CLIENTMAX"
-	[ -z "$__PROGRAM_ARGS" ] && exit 0
-	cp -f /etc/sysconfig/acpid{,.rpmsave}
-	echo >>/etc/sysconfig/acpid
-	echo "# Added by rpm trigger" >>/etc/sysconfig/acpid
-	echo "PROGRAM_ARGS=\"$PROGRAM_ARGS $__PROGRAM_ARGS\"" >>/etc/sysconfig/acpid
+	if [ -n "$__PROGRAM_ARGS" ]; then
+		cp -f /etc/sysconfig/acpid{,.rpmsave}
+		echo >>/etc/sysconfig/acpid
+		echo "# Added by rpm trigger" >>/etc/sysconfig/acpid
+		echo "PROGRAM_ARGS=\"$PROGRAM_ARGS $__PROGRAM_ARGS\"" >>/etc/sysconfig/acpid
+	fi
 fi
 %systemd_trigger acpid.service
 
