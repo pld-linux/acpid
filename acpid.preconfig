@@ -34,7 +34,7 @@ else
 	MODULES=$(echo ${MODULES})
 fi
 
-if [ -z "$MODULES" ] && exit 0
+[ -z "$MODULES" ] && exit 0
 
 # see if the modules are already loaded
 if [ "$(lsmod | grep -E '^('$(echo $MODULES | tr ' ' '|')')\b' | wc -l)" = "$(echo $MODULES | wc -w)" ]; then

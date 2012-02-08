@@ -12,7 +12,7 @@ Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
 Version:	2.0.10
-Release:	11
+Release:	12
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://tedfelix.com/linux/%{name}-%{version}.tar.gz
@@ -123,7 +123,7 @@ fi
 %postun
 %systemd_reload
 
-%triggerpostun -- %{name} < 2.0.10-11
+%triggerpostun -- %{name} < 2.0.10-12
 if [ -f /etc/sysconfig/acpid ]; then
 	. /etc/sysconfig/acpid
 	__PROGRAM_ARGS=
