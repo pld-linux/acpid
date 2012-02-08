@@ -1,4 +1,4 @@
-[Unit]                                                                                                                                                                           
+[Unit]
 Description=System ACPI Daemon
 After=syslog.service
 
