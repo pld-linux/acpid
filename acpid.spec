@@ -123,7 +123,7 @@ fi
 %postun
 %systemd_reload
 
-%triggerpostun -- %{name} < 2.0.10-9
+%triggerpostun -- %{name} < 2.0.10-11
 if [ -f /etc/sysconfig/acpid ]; then
 	. /etc/sysconfig/acpid
 	__PROGRAM_ARGS=
