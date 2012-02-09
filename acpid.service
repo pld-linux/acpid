@@ -6,6 +6,7 @@ After=syslog.service
 EnvironmentFile=-/etc/sysconfig/acpid
 ExecStartPre=-/usr/share/acpid/acpid.preconfig
 ExecStart=/usr/sbin/acpid -f $PROGRAM_ARGS
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
