@@ -12,7 +12,7 @@ Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
 Version:	2.0.10
-Release:	14
+Release:	15
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://tedfelix.com/linux/%{name}-%{version}.tar.gz
@@ -28,9 +28,11 @@ Source8:	%{name}.upstart
 Source9:	%{name}.service
 Source10:	%{name}.preconfig
 URL:		http://tedfelix.com/linux/acpid-netlink.html
-BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	rpmbuild(macros) >= 1.647
 Requires(post,preun):	/sbin/chkconfig
+Requires(post,preun,postun):	systemd-units >= 38
 Requires:	rc-scripts >= 0.4.3.0
+Requires:	systemd-units >= 38
 Provides:	acpi-daemon
 Obsoletes:	acpi-daemon
 Obsoletes:	apm-daemon
