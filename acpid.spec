@@ -27,6 +27,7 @@ Source7:	%{name}.battery.sh
 Source8:	%{name}.upstart
 Source9:	%{name}.service
 Source10:	%{name}.preconfig
+Patch1:		%{name}-micmute.patch
 URL:		http://tedfelix.com/linux/acpid-netlink.html
 BuildRequires:	rpmbuild(macros) >= 1.647
 Requires(post,preun):	/sbin/chkconfig
@@ -77,6 +78,7 @@ wyłącznie jako dyspozytor wiadomości.
 
 %prep
 %setup -q
+%patch1 -p1
 
 %build
 %{__make} \
