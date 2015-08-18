@@ -12,7 +12,7 @@ Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
 Version:	2.0.10
-Release:	15
+Release:	16
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://tedfelix.com/linux/%{name}-%{version}.tar.gz
@@ -24,7 +24,6 @@ Source4:	%{name}.button.conf
 Source5:	%{name}.battery.conf
 Source6:	%{name}.button.sh
 Source7:	%{name}.battery.sh
-Source8:	%{name}.upstart
 Source9:	%{name}.service
 Source10:	%{name}.preconfig
 Patch1:		%{name}-micmute.patch
@@ -98,7 +97,6 @@ install -d $RPM_BUILD_ROOT{/etc/{logrotate.d,rc.d/init.d,sysconfig,init},/var/lo
 install -p %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/acpid
 cp -p %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/acpid
 cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/acpid
-cp -p %{SOURCE8} $RPM_BUILD_ROOT/etc/init/acpid.conf
 cp -p %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/events/button
 cp -p %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/events/battery
 install -p %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/acpi/actions/button.sh
@@ -153,7 +151,6 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/acpid
 %attr(754,root,root) /etc/rc.d/init.d/acpid
 %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/acpid
-%config(noreplace) %verify(not md5 mtime size) /etc/init/acpid.conf
 %{systemdunitdir}/acpid.service
 %attr(640,root,root) %ghost /var/log/acpid
 %{_mandir}/man8/acpid.8*
