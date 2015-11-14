@@ -7,16 +7,15 @@
 #   also it does not allow *.conf files (missing "."), which is not backward
 #   compatible (custom files can be left unprocessed)
 #   but if patch is made to allow ".", must consider to ignore .rpm{new,old,save} files
-# - build and package kacpimon
 Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
-Version:	2.0.10
-Release:	17
+Version:	2.0.25
+Release:	1
 License:	GPL v2+
 Group:		Daemons
-Source0:	http://tedfelix.com/linux/%{name}-%{version}.tar.gz
-# Source0-md5:	d5dd88bcfaa4a0bf51905e95115da6df
+Source0:	http://downloads.sourceforge.net/acpid2/%{name}-%{version}.tar.xz
+# Source0-md5:	69bb0cc4a0a89eb2dfecc4851087f568
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
@@ -26,9 +25,10 @@ Source6:	%{name}.button.sh
 Source7:	%{name}.battery.sh
 Source9:	%{name}.service
 Source10:	%{name}.preconfig
-Patch1:		%{name}-micmute.patch
-URL:		http://tedfelix.com/linux/acpid-netlink.html
+URL:		http://sourceforge.net/projects/acpid2/
 BuildRequires:	rpmbuild(macros) >= 1.647
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	xz
 Requires(post,preun):	/sbin/chkconfig
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	rc-scripts >= 0.4.3.0
@@ -77,13 +77,11 @@ wyłącznie jako dyspozytor wiadomości.
 
 %prep
 %setup -q
-%patch1 -p1
 
 %build
-%{__make} \
-	CC="%{__cc}" \
-	LDFLAGS="%{rpmcflags} %{rpmldflags}" \
-	OPT="%{rpmcppflags} %{rpmcflags} -Wno-error"
+%configure
+
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -105,7 +103,7 @@ install %{SOURCE9} $RPM_BUILD_ROOT%{systemdunitdir}
 install %{SOURCE10} $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 > $RPM_BUILD_ROOT/var/log/acpid
-rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -142,8 +140,9 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc Changelog README TODO TESTPLAN
+%doc Changelog README TESTPLAN TODO
 %attr(755,root,root) %{_sbindir}/acpid
+%attr(755,root,root) %{_sbindir}/kacpimon
 %attr(755,root,root) %{_bindir}/acpi_listen
 %dir %{_sysconfdir}/acpi
 %dir %{_sysconfdir}/acpi/events
@@ -155,6 +154,7 @@ fi
 %attr(640,root,root) %ghost /var/log/acpid
 %{_mandir}/man8/acpid.8*
 %{_mandir}/man8/acpi_listen.8*
+%{_mandir}/man8/kacpimon.8*
 %dir %{_datadir}/%{name}
 %attr(755,root,root) %{_datadir}/%{name}/acpid.preconfig
 
