@@ -10,12 +10,12 @@
 Summary:	ACPI Event Daemon
 Summary(pl.UTF-8):	Demon zdarzeń ACPI
 Name:		acpid
-Version:	2.0.32
+Version:	2.0.34
 Release:	1
 License:	GPL v2+
 Group:		Daemons
 Source0:	http://downloads.sourceforge.net/acpid2/%{name}-%{version}.tar.xz
-# Source0-md5:	248995264b9d1cd8bdb923d5b190fd44
+# Source0-md5:	988c2e3fd5ba0ea4492d3ba7273af295
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Source3:	%{name}.logrotate
@@ -36,7 +36,7 @@ Requires:	systemd-units >= 38
 Provides:	acpi-daemon
 Obsoletes:	acpi-daemon
 Obsoletes:	apm-daemon
-ExclusiveArch:	%{ix86} %{x8664} ia64
+ExclusiveArch:	%{ix86} %{x8664} x32 ia64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
